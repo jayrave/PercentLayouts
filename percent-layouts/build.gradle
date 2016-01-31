@@ -1,4 +1,31 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+ext {
+    publishedGroupId = 'com.jayrave.layouts'
+    publishedArtifactId = 'percent-layouts'
+
+    bintrayRepo = 'android'
+    bintrayName = publishedArtifactId
+
+    libraryName = 'PercentLayouts'
+    libraryVersionName = '1.0'
+    libraryDescription = 'Percent layouts to fix issue 186875'
+
+    siteUrl = 'https://github.com/jayrave/PercentLayouts'
+    gitUrl = 'https://github.com/jayrave/PercentLayouts.git'
+    issuesUrl = 'https://github.com/jayrave/PercentLayouts/issues'
+
+    developerId = 'jayrave'
+    developerName = 'Jayanthan Raveendiran'
+    developerEmail = 'jayanthan.raveendiran@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ['Apache-2.0']
+}
+
 
 android {
     compileSdkVersion 23
@@ -8,10 +35,106 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName libraryVersionName
     }
 }
 
+
 dependencies {
     compile 'com.android.support:percent:23.1.1'
+}
+
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+
+group = publishedGroupId
+version = libraryVersionName
+
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                groupId publishedGroupId
+                artifactId publishedArtifactId
+
+                name libraryName
+                description libraryDescription
+                url siteUrl
+
+                licenses {
+                    license {
+                        name licenseName
+                        url licenseUrl
+                    }
+                }
+
+                developers {
+                    developer {
+                        id developerId
+                        name developerName
+                        email developerEmail
+                    }
+                }
+
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
+
+bintray {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+    user = properties['bintray.user']
+    key = properties['bintray.apikey']
+
+    publish = true
+    configurations = ['archives']
+
+    pkg {
+        repo = bintrayRepo
+        name = bintrayName
+        desc = libraryDescription
+        websiteUrl = siteUrl
+        issueTrackerUrl = issuesUrl
+        vcsUrl = gitUrl
+        licenses = allLicenses
+        labels = ['aar', 'android', 'percent', 'layout']
+        publicDownloadNumbers = true
+
+        version {
+            name = libraryVersionName
+            released = new Date()
+        }
+    }
 }
