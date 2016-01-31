@@ -23,9 +23,7 @@ public class PercentFrameLayout extends android.support.percent.PercentFrameLayo
 
     @Override
     public LayoutParams generateLayoutParams(@NonNull AttributeSet attrs) {
-        LayoutParams lp = new LayoutParams(getContext(), attrs);
-        PercentLayoutHelper.checkLayoutParamsFromXml(lp);
-        return lp;
+        return new LayoutParams(getContext(), attrs);
     }
 
 
@@ -34,6 +32,7 @@ public class PercentFrameLayout extends android.support.percent.PercentFrameLayo
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
+            PercentLayoutHelper.checkLayoutParamsFromXml(this);
         }
 
         public LayoutParams(ViewGroup.LayoutParams source) {
