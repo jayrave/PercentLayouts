@@ -10,7 +10,7 @@ ext {
     bintrayName = publishedArtifactId
 
     libraryName = 'PercentLayouts'
-    libraryVersionName = '1.0'
+    libraryVersionName = '1.1'
     libraryDescription = 'Percent layouts to fix issue 186875'
 
     siteUrl = 'https://github.com/jayrave/PercentLayouts'
