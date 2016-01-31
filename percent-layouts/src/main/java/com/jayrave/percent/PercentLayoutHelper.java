@@ -34,18 +34,15 @@ public class PercentLayoutHelper {
      */
     public static <LP extends ViewGroup.LayoutParams & PercentLayoutParams> void
     checkLayoutParamsFromXml(@NonNull LP lp) {
-        // Either layout_width or layout_widthPercent must be mentioned. Likewise either
-        // layout_height or layout_heightPercent must be mentioned to be valid
-
         int invalidDim = INVALID_LAYOUT_DIM_FROM_XML;
         PercentLayoutInfo percentInfo = lp.getPercentLayoutInfo();
-        boolean valid = ((lp.width == invalidDim) && (percentInfo.widthPercent < 0)) ||
+        boolean invalid = ((lp.width == invalidDim) && (percentInfo.widthPercent < 0)) ||
                 ((lp.height == invalidDim) && (percentInfo.heightPercent < 0));
 
-        if (!valid) {
+        if (invalid) {
             throw new IllegalArgumentException(
-                    "width: layout_width or layout_widthPercent must be mentioned. " +
-                            "height: layout_height or layout_heightPercent must be mentioned"
+                    "width: layout_width or layout_widthPercent (>= 0) must be mentioned. " +
+                            "height: layout_height or layout_heightPercent (>= 0) must be mentioned"
             );
         }
     }
