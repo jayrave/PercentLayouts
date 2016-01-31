@@ -1,0 +1,3 @@
+Fix for https://code.google.com/p/android/issues/detail?id=186875
+
+Support Percent library's [PercentFrameLayout](http://developer.android.com/reference/android/support/percent/PercentFrameLayout.html) and [PercentRelativeLayout](http://developer.android.com/reference/android/support/percent/PercentRelativeLayout.html) don't work well with ***\<include\>*** tag. When using ***\<include\>*** tag, none of the ***layout_*** attributes from the included layout file's root view gets parsed out by either of the percent layouts when they are supposed to be
